@@ -1,0 +1,38 @@
+<!-- helper/post_detail.html -->
+
+{% extends 'helper/base.html' %}
+
+{% block content %}
+  <div class="content-section">
+    <h1>{{ posts.title }}</h1>
+    <p>{{ posts.content }}</p>
+    <p>Posted by {{ posts.author.username }} on {{ posts.date_posted }}</p>
+    <form method="post" action="{% url 'like-post' pk=posts.pk %}">
+        {% csrf_token %}
+        <button type="submit">Likes {{ posts.likes }}</button>
+    </form>
+    <form method="post" action="{% url 'dislike-post' pk=posts.pk %}">
+        {% csrf_token %}
+        <button type="submit">Dislikes {{ posts.dislikes }}</button>
+    </form>
+
+    <!-- Display Comments -->
+    <h2>Comments</h2>
+    {% for comment in comments %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text">{{ comment.content }}</p>
+          <p class="card-text"><small class="text-muted">Commented by {{ comment.author.username }} on {{ comment.date_posted }}</small></p>
+        </div>
+      </div>
+    {% endfor %}
+
+    <!-- Comment Form -->
+    <h2>Add a Comment</h2>
+    <form method="post" action="{% url 'comment-create' pk=posts.pk %}">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn btn-primary">Add Comment</button>
+    </form>
+  </div>
+{% endblock %}

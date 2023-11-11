@@ -1,0 +1,14 @@
+<!-- helper/request_post_edit_create.html -->
+
+{% extends 'helper/base.html' %}
+
+{% block content %}
+  <div class="content-section">
+    <h2>Create a Request for Post Edit</h2>
+    <form method="post" action="{% url 'request-post-edit-create' pk=post.pk %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Submit Request</button>
+    </form>
+  </div>
+{% endblock %}

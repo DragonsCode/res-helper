@@ -1,0 +1,23 @@
+<!-- helper/other_posts.html -->
+
+{% extends 'helper/base.html' %}
+
+{% block content %}
+  <div class="content-section">
+    <h1>Other Posts</h1>
+    <div class="row">
+      {% for otherpost in other_post %}
+        <div class="col-md-12">
+          <div class="card mb-4">
+            <div class="card-body">
+              <h2 class="card-title">{{ otherpost.title }}</h2>
+              <p class="card-text">{{ otherpost.content }}</p>
+              <p class="card-text"><small class="text-muted">Posted by {{ otherpost.author.username }} on {{ otherpost.date_posted }}</small></p>
+              <a href="{% url 'otherpost-detail' pk=otherpost.pk %}" class="btn btn-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
