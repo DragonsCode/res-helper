@@ -27,6 +27,5 @@ urlpatterns = [
     path('request-edits/<int:pk>/update/', RequestPostEditUpdateView.as_view(), name='post-edit-update'),
     path('request-edits/<int:pk>/delete/', RequestPostEditDeleteView.as_view(), name='post-edit-delete'),
 
-    path('other-posts/', OtherPostListView.as_view(), name='other-posts'),
-    path('other-posts/<int:pk>/', OtherPostDetailView.as_view(), name='other-post-detail'),
+    path('other-posts/', other_posts, name='other-posts'),
 ]

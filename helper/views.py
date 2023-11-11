@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from django.views.generic import (
     ListView,
     DetailView,
@@ -10,11 +11,33 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import Post, PostComments, RequestPostEdit, OtherPost
+
+import requests
+import re
+
+from .models import Post, PostComments, RequestPostEdit, Liked
 from .forms import CommentForm
 
 def home(request):
     return render(request, 'helper/home.html', {'title': 'Re:Search'})
+
+
+def other_posts(request):
+    r = requests.get("https://newsapi.org/v2/top-headlines?country=us&category=science&apiKey=6f407712397e49659ca673564e51906d")
+    data = r.json()
+    new_data = []
+    regex = r" \[\+\d+ chars\]"
+    for i in data['articles']:
+        if i['title'] == '[Removed]':
+            continue
+        else:
+            i['author'] = 'Unknown' if i['author'] == None else i['author']
+            i['content'] = 'Cannot load the text of this article :(' if i['content'] == None else re.sub(regex, "", i['content'])
+            i['publishedAt'] = i['publishedAt'][:10]
+            new_data.append(i)
+
+    data['articles'] = new_data
+    return render(request, 'helper/other_posts.html', context=data)
 
 
 class PostListView(ListView):
@@ -49,20 +72,54 @@ class PostDetailView(DetailView):
         return context
 
 
+@login_required
 @require_POST
 def like_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.likes += 1
-    post.save()
-    return redirect('post-detail', pk=pk)
+    liked = Liked.objects.filter(author=request.user).first()
+    if not liked:
+        liked = Liked(post=post, author=request.user, rating=1)
+        liked.save()
+        post.likes += 1
+        post.save()
+        return redirect('post-detail', pk=pk)
+    elif liked.rating == -1:
+        post.likes += 1
+        post.dislikes -= 1
+        post.save()
+        liked.rating = 1
+        liked.save()
+        return redirect('post-detail', pk=pk)
+    else:
+        liked.delete()
+        post.likes -= 1
+        post.save()
+        return redirect('post-detail', pk=pk)
 
 
+@login_required
 @require_POST
 def dislike_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.dislikes += 1
-    post.save()
-    return redirect('post-detail', pk=pk)
+    liked = Liked.objects.filter(author=request.user).first()
+    if not liked:
+        liked = Liked(post=post, author=request.user, rating=-1)
+        liked.save()
+        post.dislikes += 1
+        post.save()
+        return redirect('post-detail', pk=pk)
+    elif liked.rating == 1:
+        post.likes -= 1
+        post.dislikes += 1
+        post.save()
+        liked.rating = -1
+        liked.save()
+        return redirect('post-detail', pk=pk)
+    else:
+        liked.delete()
+        post.dislikes -= 1
+        post.save()
+        return redirect('post-detail', pk=pk)
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
@@ -145,19 +202,6 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == post.author:
             return True
         return False
-
-
-class OtherPostListView(ListView):
-    model = OtherPost
-    template_name = 'helper/other_posts.html'  
-    context_object_name = 'other-post'
-    ordering = ['-date_posted']
-
-
-class OtherPostDetailView(DetailView):
-    model = OtherPost
-    template_name = 'helper/other_post_detail.html'
-    context_object_name = 'other-post'
 
 
 class RequestPostEditListView(ListView):

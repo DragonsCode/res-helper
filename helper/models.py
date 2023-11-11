@@ -21,20 +21,17 @@ class Post(models.Model):
         return reverse('post-detail', kwargs={'pk': self.pk})
 
 
-class OtherPost(models.Model):
-    title = models.CharField(max_length=100)
-    sphere = models.CharField(max_length=100)
-    source = models.CharField(max_length=100)
-    url = models.CharField(max_length=100)
-    content = models.TextField()
-    date_posted = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
+class Liked(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
 
     def __str__(self):
-        return self.title
+        return self.post.title
 
     def get_absolute_url(self):
-        return reverse('other-post-detail', kwargs={'pk': self.pk})
+        return reverse('liked', kwargs={'pk': self.pk})
 
 
 class PostComments(models.Model):
