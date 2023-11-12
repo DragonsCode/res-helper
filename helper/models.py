@@ -49,6 +49,19 @@ class PostComments(models.Model):
         return reverse('post-comments-detail', kwargs={'pk': self.pk})
 
 
+class LikedComments(models.Model):
+    comment = models.ForeignKey(PostComments, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)
+    date_posted = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+
+    def __str__(self):
+        return self.comment.content
+
+    def get_absolute_url(self):
+        return reverse('liked-comment', kwargs={'pk': self.pk})
+
+
 class RequestPostEdit(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField()

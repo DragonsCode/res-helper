@@ -23,6 +23,14 @@
         <div class="card-body">
           <p class="card-text">{{ comment.content }}</p>
           <p class="card-text"><small class="text-muted">Commented by {{ comment.author.username }} on {{ comment.date_posted }}</small></p>
+          <!-- <form method="post" action="{% url 'like-comment' pk=comment.pk %}">
+            {% csrf_token %}
+            <button type="submit">Likes {{ comment.likes }}</button>
+        </form>
+        <form method="post" action="{% url 'dislike-comment' pk=comment.pk %}">
+            {% csrf_token %}
+            <button type="submit">Dislikes {{ comment.dislikes }}</button>
+        </form> -->
         </div>
       </div>
     {% endfor %}

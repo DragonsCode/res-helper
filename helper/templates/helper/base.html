@@ -36,11 +36,11 @@
         
             <div id="navbar" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="{% url 'home' %}">
+                    <a class="navbar-item navbar-link" href="{% url 'home' %}">
                         Home
                     </a>
         
-                    <a class="navbar-item" href="{% url 'posts' %}">
+                    <a class="navbar-item navbar-link" href="{% url 'posts' %}">
                         Articles
                     </a>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="navbar-end">
                     {% if user.is_authenticated %}
                     <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link" href="{% url 'profile' %}">Profile</a>
+                            <a class="navbar-link button is-primary" href="{% url 'profile' %}">Profile</a>
                     </div>
                     <div class="navbar-item">
                         <a class="button is-light" href="/logout">
@@ -75,13 +75,6 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
-          {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-              {{ message }}
-            </div>
-            {% endfor %}
-          {% endif %}
           {% block content %}{% endblock %}
         </div>
       </div>

@@ -5,6 +5,15 @@
 {% block content %}
   <div class="content-section">
     <h1>Other Posts</h1>
+    <div>
+      <a class="btn btn-primary" href="{% url 'posts' %}">Our posts</a>
+      <a class="btn btn-primary" href="{% url 'other-posts' %}">Other posts</a>
+      {% if user.is_authenticated %}
+      <a class="btn btn-primary" href="{% url 'post-create' %}">Create post</a>
+      {% else %}
+      <a class="btn btn-primary" href="{% url 'login' %}">Create post</a>
+      {% endif %}
+    </div>
     <div class="row">
       {% for otherpost in articles %}
         <div class="col-md-12">
@@ -20,5 +29,30 @@
         </div>
       {% endfor %}
     </div>
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if not articles.has_previous %} disabled {% endif %}">
+          <a class="page-link" href="{% if articles.has_previous %} ?page={{ articles.previous_page_number }} {% endif %} ">Previous</a>
+      </li>
+
+      {% if articles.number|add:'-1' > 1 %}
+          <li class="page-item disabled"><a class="page-link">&hellip;</a></li>
+      {% endif %}
+
+      {% for i in articles.paginator.page_range %}
+          {% if articles.number == i %}
+              <li class="active page-item disabled"><a class="page-link" href="#">{{ i }}</a></li>
+          {% elif i > articles.number|add:'-2' and i < articles.number|add:'2' %}
+              <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+      {% endfor %}
+
+      {% if articles.paginator.num_pages > articles.number|add:'1' %}
+          <li class="page-item disabled"><a class="page-link" href="#">&hellip;</a></li>
+      {% endif %}
+
+      <li class="page-item {% if not articles.has_next %} disabled {% endif %}">
+          <a class="page-link" href="{% if articles.has_next %} ?page={{ articles.next_page_number }} {% endif %}">Next</a>
+      </li>
+  </ul>
   </div>
 {% endblock %}

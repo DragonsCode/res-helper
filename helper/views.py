@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import (
     ListView,
     DetailView,
@@ -15,7 +16,7 @@ from django.views.generic import (
 import requests
 import re
 
-from .models import Post, PostComments, RequestPostEdit, Liked
+from .models import Post, PostComments, RequestPostEdit, Liked, LikedComments
 from .forms import CommentForm
 
 def home(request):
@@ -36,8 +37,19 @@ def other_posts(request):
             i['publishedAt'] = i['publishedAt'][:10]
             new_data.append(i)
 
-    data['articles'] = new_data
-    return render(request, 'helper/other_posts.html', context=data)
+    data = new_data
+
+    page = request.GET.get('page')
+    paginator = Paginator(data, 5)
+    try:
+        data = paginator.page(page)
+    except PageNotAnInteger:
+        data = paginator.page(1)
+    except EmptyPage:
+        # if we exceed the page limit we return the last page 
+        data = paginator.page(paginator.num_pages)
+    
+    return render(request, 'helper/other_posts.html', {'articles': data})
 
 
 class PostListView(ListView):
@@ -133,31 +145,29 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
     
-    # def get_success_url(self):
-    #     return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['pk']})
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['pk']})
 
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = PostComments
     form_class = CommentForm
     template_name = 'comment_update.html'
-    success_url = '/'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    # def get_success_url(self):
-    #     return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
 
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = PostComments
     template_name = 'comment_confirm_delete.html'
-    success_url = '/'
 
-    # def get_success_url(self):
-    #     return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
+    def get_success_url(self):
+        return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})
 
     def test_func(self):
         comment = self.get_object()
@@ -165,11 +175,54 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+@login_required
+@require_POST
+def like_comment(request, pk):
+    comment = get_object_or_404(PostComments, pk=pk)
+
+    try:
+        liked = LikedComments.objects.get(comment=comment, author=request.user)
+        if liked.rating == -1:
+            comment.likes += 1
+            comment.dislikes -= 1
+            liked.rating = 1
+        else:
+            liked.delete()
+            comment.likes -= 1
+    except LikedComments.DoesNotExist:
+        LikedComments.objects.create(comment=comment, author=request.user, rating=1)
+        comment.likes += 1
+
+    comment.save()
+    return redirect('post-detail', pk=comment.post.pk)
+
+
+@login_required
+@require_POST
+def dislike_comment(request, pk):
+    comment = get_object_or_404(PostComments, pk=pk)
+
+    try:
+        liked = LikedComments.objects.get(comment=comment, author=request.user)
+        if liked.rating == 1:
+            comment.likes -= 1
+            comment.dislikes += 1
+            liked.rating = -1
+        else:
+            liked.delete()
+            comment.dislikes -= 1
+    except LikedComments.DoesNotExist:
+        LikedComments.objects.create(comment=comment, author=request.user, rating=-1)
+        comment.dislikes += 1
+
+    comment.save()
+    return redirect('post-detail', pk=comment.post.pk)
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     # template_name = 'post_create.html'
-    fields = ['title', 'content']
+    fields = ['title', 'sphere', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
