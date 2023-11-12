@@ -14,6 +14,12 @@ body, h1, h2, h3, p {
   background-color: white;
   box-shadow: 5px 5px 5px 1px rgb(70, 70, 70);
 }
+.content-section .btn.btn-primary{
+  border-radius: 10px;
+  background-color: #3b3a3d;
+  border: none;
+  margin: 5px 0px;
+}
 
 .content-section p {
   padding: 10px 10px;
@@ -213,4 +219,19 @@ body {
     .footer {
         position: static;
     }
+}
+
+.form-group .btn.btn-outline-info {
+    background-color: #3b3a3d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.content-section button {
+    background-color: #3b3a3d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
 }
