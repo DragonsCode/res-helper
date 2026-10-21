@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-10-20T14:29:55.310Z",
+  "browser": "154.0.8037.57",
+  "note": "rAF computed-style samples in a shared cloud browser; not a GPU frame trace or real-device FPS guarantee.",
+  "runs": [
+    {
+      "sampleCount": 30,
+      "transformStates": 11,
+      "backdropOpacityStates": 6,
+      "medianMs": 16.7,
+      "p95Ms": 100.1,
+      "final": {
+        "time": 2227,
+        "transform": "none",
+        "backdropOpacity": "1"
+      }
+    },
+    {
+      "sampleCount": 30,
+      "transformStates": 10,
+      "backdropOpacityStates": 6,
+      "medianMs": 16.7,
+      "p95Ms": 49.9,
+      "final": {
+        "time": 3043.6,
+        "transform": "none",
+        "backdropOpacity": "1"
+      }
+    },
+    {
+      "sampleCount": 30,
+      "transformStates": 9,
+      "backdropOpacityStates": 5,
+      "medianMs": 16.7,
+      "p95Ms": 66.7,
+      "final": {
+        "time": 3877,
+        "transform": "none",
+        "backdropOpacity": "1"
+      }
+    }
+  ],
+  "reducedMotion": {
+    "dialog": "none",
+    "backdrop": "none"
+  }
+}

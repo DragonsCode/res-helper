@@ -1,0 +1,47 @@
+/* Re:Search — Laboratory ledger. Semantic values, not component colors. */
+:root {
+  --paper: #fbfcfd;
+  --surface: #ffffff;
+  --surface-subtle: #f0f3f6;
+  --ink: #18232f;
+  --ink-secondary: #526171;
+  --line: #d5dce3;
+  --line-strong: #9aa7b4;
+  --instrument: #192b3b;
+  --instrument-text: #f4f7fb;
+  --accent: #174fc4;
+  --accent-hover: #103b98;
+  --accent-tint: #eaf0fc;
+  --attention: #78521c;
+  --attention-surface: #faf3e5;
+  --error: #a02d32;
+  --error-surface: #fff1f1;
+  --success: #245f49;
+  --font-ui: Arial, Helvetica, sans-serif;
+  --font-reading: Georgia, 'Times New Roman', serif;
+  --font-data: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --text-caption: .75rem;
+  --text-small: .875rem;
+  --text-body: 1rem;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-control: 4px;
+  --radius-document: 0px;
+  --layer-header: 10;
+  --layer-toast: 50;
+  --shadow-dialog: 0 24px 90px #10223530;
+  --duration-feedback: 120ms;
+  --duration-control: 180ms;
+  --duration-dismiss: 160ms;
+  --duration-disclosure: 240ms;
+  --duration-spatial: 320ms;
+  --ease-settle: cubic-bezier(.2,.8,.2,1);
+  --ease-exit: cubic-bezier(.4,0,1,1);
+  --content-width: 1440px;
+  /* Layout breakpoints: 1100 (compact desktop), 760 (mobile), 420 (narrow). */
+}

@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-10-20T14:10:37.592Z",
+  "browser": "154.0.8037.57",
+  "build": "Vite production preview; local API; shared cloud host; no CPU/network throttling",
+  "viewport": "1440×1000",
+  "shifts": [
+    0.048965820312500005
+  ],
+  "longTasks": [
+    51,
+    76,
+    86,
+    1074,
+    454,
+    135,
+    470,
+    442,
+    126,
+    73,
+    733,
+    52,
+    130
+  ],
+  "paints": [
+    {
+      "name": "first-paint",
+      "ms": 8572
+    },
+    {
+      "name": "first-contentful-paint",
+      "ms": 11960
+    }
+  ],
+  "idleAnimations": 0,
+  "externalResources": [],
+  "overflow": false,
+  "cls": 0.049,
+  "frameMedianMs": 16.7,
+  "frameP95Ms": 16.8,
+  "inspectorAnimation": {
+    "name": "inspector-enter",
+    "duration": "0.32s",
+    "distinctTransforms": 1,
+    "final": {
+      "transform": "none",
+      "opacity": "1"
+    }
+  },
+  "reducedMotion": "none",
+  "narrowOverflow": false,
+  "javascriptErrors": []
+}

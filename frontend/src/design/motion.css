@@ -1,0 +1,27 @@
+/* Hover identifies action; press acknowledges contact. Never animate document text. */
+button, .button, .nav-item, .project-card, .article-card { transition: background-color var(--duration-feedback), border-color var(--duration-feedback), color var(--duration-feedback); }
+.button:active:not(:disabled), .icon-button:active:not(:disabled) { transform: translateY(1px); }
+.progress-track > span { transition: transform var(--duration-disclosure) var(--ease-settle); transform-origin: left; }
+.modal[open] { will-change: transform, opacity; animation: dialog-enter var(--duration-disclosure) var(--ease-settle); }
+.modal[open]::backdrop { will-change: opacity; animation: backdrop-enter var(--duration-control) ease-out; }
+.modal.modal-panel[open] { animation: inspector-enter var(--duration-spatial) var(--ease-settle); }
+.modal.is-closing[open] { animation: dialog-exit var(--duration-dismiss) var(--ease-exit) forwards; }
+.modal.modal-panel.is-closing[open] { animation: inspector-exit var(--duration-dismiss) var(--ease-exit) forwards; }
+.modal.is-closing::backdrop { animation: backdrop-exit var(--duration-dismiss) ease-in forwards; }
+.protocol-form { animation: disclosure-enter var(--duration-disclosure) var(--ease-settle); }
+.toast { animation: toast-enter var(--duration-control) var(--ease-settle); }
+.spin { animation: spin 900ms linear infinite; }
+.pending-dot { width: 9px; height: 9px; background: var(--accent); border-radius: 50%; animation: pending 800ms ease-in-out infinite alternate; }
+@keyframes dialog-enter { from { opacity: 0; transform: scale(.98); } to { opacity: 1; transform: scale(1); } }
+@keyframes dialog-exit { to { opacity: 0; transform: scale(.98); } }
+@keyframes inspector-enter { from { opacity: .4; transform: translateX(48px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes inspector-exit { to { opacity: 0; transform: translateX(48px); } }
+@keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes backdrop-exit { to { opacity: 0; } }
+@keyframes disclosure-enter { from { opacity: .35; } to { opacity: 1; } }
+@keyframes toast-enter { from { transform: translateY(8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pending { to { opacity: .3; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after, *::backdrop { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

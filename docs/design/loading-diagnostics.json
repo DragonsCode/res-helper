@@ -1,0 +1,106 @@
+[
+  {
+    "name": "landing-cold",
+    "paints": [
+      {
+        "name": "first-paint",
+        "ms": 324
+      },
+      {
+        "name": "first-contentful-paint",
+        "ms": 740
+      }
+    ],
+    "navigation": [
+      {
+        "response": 61,
+        "dom": 459,
+        "load": 459
+      }
+    ],
+    "resources": [
+      {
+        "name": "index-CfbNbwhF.js",
+        "ms": 204,
+        "start": 160,
+        "transfer": 131527
+      },
+      {
+        "name": "index-D05CDL5Y.css",
+        "ms": 110,
+        "start": 167,
+        "transfer": 8925
+      },
+      {
+        "name": "me",
+        "ms": 87,
+        "start": 712,
+        "transfer": 345
+      },
+      {
+        "name": "config",
+        "ms": 86,
+        "start": 713,
+        "transfer": 339
+      },
+      {
+        "name": "favicon.svg",
+        "ms": 74,
+        "start": 749,
+        "transfer": 557
+      }
+    ]
+  },
+  {
+    "name": "landing-warm",
+    "paints": [
+      {
+        "name": "first-paint",
+        "ms": 280
+      },
+      {
+        "name": "first-contentful-paint",
+        "ms": 440
+      }
+    ],
+    "navigation": [
+      {
+        "response": 22,
+        "dom": 266,
+        "load": 267
+      }
+    ],
+    "resources": [
+      {
+        "name": "index-CfbNbwhF.js",
+        "ms": 14,
+        "start": 118,
+        "transfer": 300
+      },
+      {
+        "name": "index-D05CDL5Y.css",
+        "ms": 19,
+        "start": 128,
+        "transfer": 300
+      },
+      {
+        "name": "me",
+        "ms": 62,
+        "start": 382,
+        "transfer": 345
+      },
+      {
+        "name": "config",
+        "ms": 60,
+        "start": 384,
+        "transfer": 339
+      },
+      {
+        "name": "favicon.svg",
+        "ms": 13,
+        "start": 393,
+        "transfer": 300
+      }
+    ]
+  }
+]
